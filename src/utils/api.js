@@ -85,7 +85,7 @@ class Api{
     });
   }
   deleteLike(cardId) {
-    return fetch(`${this.baseUrl}/cards/${cardId}`, {
+    return fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
       method: "DELETE",
       headers: this.headers,
       })
@@ -95,6 +95,13 @@ class Api{
       }
       return Promise.reject(`Error: ${res.status}`);
     });
+  }
+  changeLikeCardStatus(cardId, isLiked) {
+    if (isLiked) {
+      return this.addLike(cardId);
+    } else {
+      return this.deleteLike(cardId);
+    }
   }
   editAvatar(avatar){
     return fetch(`${this.baseUrl}/users/me/avatar`, {

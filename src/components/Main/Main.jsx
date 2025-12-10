@@ -85,6 +85,7 @@ export function Main() {
       api.getInitialCards()
         .then((data) => {
           setCards(data);
+          console.log("Tarjetas recibidas:", data);
         })
         .catch((err) => {
           console.log("No se logró obtener las tarjetas:", err);
@@ -106,6 +107,18 @@ export function Main() {
         title: "¿Estás seguro?",
         children: <RemoveCard />,
         buttonText: "Sí"
+      });
+    }
+    async function handleCardLike(card) {
+      const isLiked = card.isLiked;
+      await api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) => (currentCard._id === card._id ? newCard : currentCard))
+        );
+      })
+      .catch((err) => {
+        console.log("No se pudo actualizar el estado del me gusta:", err);
       });
     }
 
@@ -138,6 +151,7 @@ export function Main() {
               card={card}
               onCardClick={handleCardClick}
               onCardDelete={handleCardDelete}
+              onCardLike={handleCardLike}
             />
           ))}
         </section>
