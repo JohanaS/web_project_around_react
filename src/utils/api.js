@@ -16,13 +16,13 @@ class Api{
     return Promise.reject(`Error: ${res.status}`);
     });
   }
-  editUserInfo(name, about){
+  setUserInfo(data){
     return fetch(`${this.baseUrl}/users/me`, {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
-        name,
-        about,
+        name: data.name,
+        about: data.about,
       })
     })
     .then((res) => {

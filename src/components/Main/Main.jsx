@@ -1,12 +1,10 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import Popup from "./components/Popup/Popup.jsx";
 import EditAvatar from "./components/Popup/EditAvatar/EditAvatar.jsx";
 import EditProfile from "./components/Popup/EditProfile/EditProfile.jsx";
 import NewCard from "./components/Popup/NewCard/NewCard.jsx";
 import Card from "./components/Card/Card.jsx";
 import ImagePopup from "./components/Popup/ImagePopup/ImagePopup.jsx";
-import RemoveCard from "./components/Popup/RemoveCard/RemoveCard.jsx";
-import { api } from "../../utils/api.js";
 import  CurrentUserContext  from "../../contexts/CurrentUserContext.js";
 
 // const cards = [
@@ -60,66 +58,34 @@ import  CurrentUserContext  from "../../contexts/CurrentUserContext.js";
 //   }
 // ];
 
-export function Main() {
-    const [popup, setPopup] = useState(null);
+export function Main({ onOpenPopup, onClosePopup, popup, onCardLike, onCardDelete, cards }) {
     const [selectedCard, setSelectedCard] = useState(null);
-    const [cards, setCards] = useState([]);
-    const currentUser = useContext(CurrentUserContext);
+    const { currentUser } = useContext(CurrentUserContext);
 
     const newEditAvatar = {
       title: "Cambiar foto de perfil",
-      children: <EditAvatar />,
+      children: <EditAvatar onClose={handleClose} />,
+      formId: "edit-avatar-form"
     };
 
     const newEditProfile = {
       title: "Editar perfil",
       children: <EditProfile />,
+      formId: "edit-profile-form"
     };
 
     const newCardPopup = {
       title: "Nuevo lugar",
       children: <NewCard />,
+      formId: "new-card-form"
     };
 
-    useEffect(() => {
-      api.getInitialCards()
-        .then((data) => {
-          setCards(data);
-          console.log("Tarjetas recibidas:", data);
-        })
-        .catch((err) => {
-          console.log("No se logró obtener las tarjetas:", err);
-        });
-    }, []);
-
-    function handleOpenPopup(popup) {
-      setPopup(popup);
-    }
-    function handleClosePopup() {
-      setPopup(null);
+    function handleClose() {
+      onClosePopup();
       setSelectedCard(null);
     }
     function handleCardClick(card) {
       setSelectedCard(card);
-    }
-    function handleCardDelete(card) {
-      setPopup({
-        title: "¿Estás seguro?",
-        children: <RemoveCard />,
-        buttonText: "Sí"
-      });
-    }
-    async function handleCardLike(card) {
-      const isLiked = card.isLiked;
-      await api.changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((currentCard) => (currentCard._id === card._id ? newCard : currentCard))
-        );
-      })
-      .catch((err) => {
-        console.log("No se pudo actualizar el estado del me gusta:", err);
-      });
     }
 
     return (
@@ -129,12 +95,12 @@ export function Main() {
             <div className="profile__info">
               <div className="profile__avatar-container">
                 <img name="avatar" src={currentUser.avatar} className="profile__avatar" alt="imagen-usuario"/>
-                <span name="editImage" className="profile__edit-icon" type="button" onClick={() => handleOpenPopup(newEditAvatar)}></span>
+                <span name="editImage" className="profile__edit-icon" type="button" onClick={() => onOpenPopup(newEditAvatar)}></span>
               </div>
               <div>
                 <div className="profile__edition">
                   <h2 className="profile__name">{currentUser.name}</h2>
-                  <button className="profile__edit-button" type="button" onClick={() => handleOpenPopup(newEditProfile)}></button>
+                  <button className="profile__edit-button" type="button" onClick={() => onOpenPopup(newEditProfile)}></button>
               </div>
               <div>
                 <p className="profile__position">{currentUser.about}</p>
@@ -142,7 +108,7 @@ export function Main() {
             </div>
             </div>
           </div>
-          <button className="profile__add-button" type="button" onClick={() => handleOpenPopup(newCardPopup)}>+</button>
+          <button className="profile__add-button" type="button" onClick={() => onOpenPopup(newCardPopup)}>+</button>
         </section>
         <section className="cards-container">
           {cards.map((card) => (
@@ -150,17 +116,17 @@ export function Main() {
               key={card._id}
               card={card}
               onCardClick={handleCardClick}
-              onCardDelete={handleCardDelete}
-              onCardLike={handleCardLike}
+              onCardDelete={onCardDelete}
+              onCardLike={onCardLike}
             />
           ))}
         </section>
         {popup && (
-          <Popup onClose={handleClosePopup} title={popup.title} buttonText={popup.buttonText}>
+          <Popup onClose={handleClose} title={popup.title} buttonText={popup.buttonText} onSubmit={popup.onSubmit} formId={popup.formId}>
             {popup.children}
           </Popup>
         )}
-        <ImagePopup card={selectedCard} onClose={handleClosePopup} />
+        <ImagePopup card={selectedCard} onClose={handleClose} />
       </main>
     );
   }

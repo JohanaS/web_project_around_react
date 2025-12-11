@@ -1,16 +1,39 @@
-# React + Vite
+# Around React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto es una aplicación web interactiva tipo red social que permite a los usuarios compartir imágenes de lugares, dar "me gusta" y gestionar su perfil.
 
-Currently, two official plugins are available:
+Este es el **primer proyecto del bootcamp desarrollado utilizando React**, marcando la transición de JavaScript a un desarrollo basado en componentes y gestión de estado.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Características
 
-## React Compiler
+- **Gestión de Perfil**: Edición de nombre, descripción y avatar del usuario.
+- **Gestión de Tarjetas**: Crear nuevas tarjetas con imágenes y títulos, y eliminar tarjetas propias.
+- **Interacción**: Dar y quitar "me gusta" a las tarjetas.
+- **Visualización**: Popup de imagen completa al hacer clic en una tarjeta.
+- **Validación**: Formularios con validación integrada.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tecnologías Utilizadas
 
-## Expanding the ESLint configuration
+El proyecto fue desarrollado empleando las siguientes tecnologías y herramientas:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React**: Biblioteca principal para la construcción de la interfaz de usuario basada en componentes.
+- **Vite**: Entorno de desarrollo rápido y herramienta de construcción.
+- **JavaScript (ES6+)**: Lógica de la aplicación.
+- **CSS3**: Estilizado de componentes (siguiendo metodología BEM adaptada a React).
+- **Context API**: Para la gestión del estado global (usuario actual).
+- **API Rest**: Comunicación con el servidor para persistencia de datos (tarjetas, usuario).
+
+## Instalación y Ejecución
+
+Para correr este proyecto localmente:
+
+1. Clona el repositorio.
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+3. Ejecuta el servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+4. Abre tu navegador en la dirección que muestra la terminal (usualmente `http://localhost:5173`).
