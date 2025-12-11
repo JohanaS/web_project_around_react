@@ -37,3 +37,5 @@ Para correr este proyecto localmente:
    npm run dev
    ```
 4. Abre tu navegador en la dirección que muestra la terminal (usualmente `http://localhost:5173`).
+
+## Visita el sitio en `https://johanas.github.io/web_project_around_react/`
